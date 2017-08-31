@@ -36,6 +36,10 @@ android {
             buildConfigField "String", "HOST", "\"api.librus.pl\""
             buildConfigField "String", "SENDER_ID", "\"431120868545\""
         }
+        foss {
+            buildConfigField "String", "HOST", "\"api.librus.pl\""
+            buildConfigField "String", "SENDER_ID", "\"431120868545\""
+        }
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
