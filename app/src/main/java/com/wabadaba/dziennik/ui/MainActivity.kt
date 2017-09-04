@@ -16,8 +16,8 @@ import co.zsmb.materialdrawerkt.draweritems.profile.profileSetting
 import com.amulyakhare.textdrawable.TextDrawable
 import com.amulyakhare.textdrawable.util.ColorGenerator
 import com.bugsnag.android.Bugsnag
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
+//import com.google.android.gms.common.ConnectionResult
+//import com.google.android.gms.common.GoogleApiAvailability
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
@@ -107,24 +107,7 @@ class MainActivity : AppCompatActivity(), LifecycleRegistryOwner {
         mainApplication.mainComponent.inject(this)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
-
-        if (checkGooglePlayServicesAvailable()) {
-            userRepository.allUsers.observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { users ->
-                        if (users.isEmpty()) {
-                            logger.info { "No users, redirecting to login" }
-                            redirectToLogin()
-                            finish()
-                        } else {
-                            registerGCM()
-                            logger.info { "${users.size} users logged in" }
-                            setupDrawer(users)
-                            RxJavaPlugins.setErrorHandler(errorHandler)
-                            switchFragment(fragmentRepository.currentFragment)
-                            drawer.setSelection(fragmentRepository.currentFragment.drawerId)
-                        }
-                    }
-        }
+        
     }
 
     private fun registerGCM() {
@@ -132,18 +115,6 @@ class MainActivity : AppCompatActivity(), LifecycleRegistryOwner {
             LibrusGCMRegistrationManager(it, rxHttpClient, this)
                     .register()
         }
-    }
-
-    private fun checkGooglePlayServicesAvailable(): Boolean {
-        val googleApiAvailability = GoogleApiAvailability.getInstance()
-        val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
-        if (status != ConnectionResult.SUCCESS) {
-            if (googleApiAvailability.isUserResolvableError(status)) {
-                googleApiAvailability.getErrorDialog(this, status, 2404).show()
-            }
-            return false
-        }
-        return true
     }
 
     @Suppress("DEPRECATION")

@@ -3,8 +3,8 @@ package com.wabadaba.dziennik.api.notification
 import android.content.Context
 import android.preference.PreferenceManager
 import com.bugsnag.android.Bugsnag
-import com.google.android.gms.gcm.GoogleCloudMessaging
-import com.google.android.gms.iid.InstanceID
+//import com.google.android.gms.gcm.GoogleCloudMessaging
+//import com.google.android.gms.iid.InstanceID
 import com.wabadaba.dziennik.BuildConfig
 import com.wabadaba.dziennik.api.APIClient
 import com.wabadaba.dziennik.api.FullUser
@@ -23,7 +23,7 @@ class LibrusGCMRegistrationManager(private val currentUser: FullUser,
     fun register() {
         if (!isRegistered()) {
             getRegistrationToken()
-                    .flatMap { regToken -> apiClient.pushDevices(regToken) }
+                    //.flatMap { regToken -> apiClient.pushDevices(regToken) }
                     .doOnSuccess { this.setRegistered() }
                     .subscribeOn(Schedulers.io())
                     .subscribe(
@@ -55,9 +55,9 @@ class LibrusGCMRegistrationManager(private val currentUser: FullUser,
     }
 
     private fun getRegistrationToken() = Single.fromCallable {
-        val instanceID = InstanceID.getInstance(context)
-        instanceID.getToken(senderId,
-                GoogleCloudMessaging.INSTANCE_ID_SCOPE, null)
+        //val instanceID = InstanceID.getInstance(context)
+        //instanceID.getToken(senderId,
+        //        GoogleCloudMessaging.INSTANCE_ID_SCOPE, null)
     }
 }
 
